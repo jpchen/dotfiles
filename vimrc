@@ -145,6 +145,8 @@ endfun
 
                 autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
+set nofoldenable    " disable folding
+
 set t_Co=256        "256 color terminal
 "lettuce, jellybeans, zenburn, mustang, leo, maroloccio, herald, inkpot,
 "kellys, tir_black, xoria256
