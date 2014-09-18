@@ -135,6 +135,7 @@ set ignorecase      " ignore case on search
 hi CursorLine cterm=None ctermbg=235 
 set cursorline!
 
+set paste       " vim stops fucking up my pasting formate
 "remove trailing whitespace
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
