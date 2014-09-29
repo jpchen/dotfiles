@@ -16,9 +16,10 @@ alias speclab='ssh speclab.seas.upenn.edu'
 alias rm='rm -i'
 alias rmdir='rmdir -i'
 
+#logs from pdflatex
 cleantex () {
-    rm -f $1.aux
-    rm -f $1.log
+    rm -f *.aux
+    rm -f *.log
     echo done
 }
 
@@ -52,7 +53,6 @@ extract () {
 	
 source ~/.rvm/scripts/rvm
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-export PATH=/usr/texbin:$PATH
 
 function today {
     echo "Today's date is:"
