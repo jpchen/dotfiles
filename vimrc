@@ -135,7 +135,6 @@ set ignorecase      " ignore case on search
 hi CursorLine cterm=None ctermbg=235 
 set cursorline!
 
-set paste       " vim stops fucking up my pasting formate
 "remove trailing whitespace
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
@@ -146,9 +145,11 @@ endfun
 
                 autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
+let g:Tex_DefaultTargetFormat = 'pdf' "for latex
+
 set nofoldenable    " disable folding
 
 set t_Co=256        "256 color terminal
 "lettuce, jellybeans, zenburn, mustang, leo, maroloccio, herald, inkpot,
 "kellys, tir_black, xoria256
-colo lucius
+colo lucius 

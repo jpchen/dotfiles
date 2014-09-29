@@ -16,6 +16,12 @@ alias speclab='ssh speclab.seas.upenn.edu'
 alias rm='rm -i'
 alias rmdir='rmdir -i'
 
+cleantex () {
+    rm -f $1.aux
+    rm -f $1.log
+    echo done
+}
+
 #tweet from commandline
 tweet(){
     curl -u user:pass -d status="$1" http://twitter.com/statuses/update.xml
@@ -46,6 +52,7 @@ extract () {
 	
 source ~/.rvm/scripts/rvm
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export PATH=/usr/texbin:$PATH
 
 function today {
     echo "Today's date is:"
