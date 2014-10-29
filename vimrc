@@ -41,6 +41,9 @@ map Q gq
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
 
+noremap <Down> gj
+noremap <Up> gk
+
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
   set mouse=a
@@ -150,6 +153,6 @@ let g:Tex_DefaultTargetFormat = 'pdf' "for latex
 set nofoldenable    " disable folding
 
 set t_Co=256        "256 color terminal
-"lettuce, jellybeans, zenburn, mustang, leo, maroloccio, herald, inkpot,
+"lucius, lettuce, jellybeans, zenburn, mustang, leo, maroloccio, herald, inkpot,
 "kellys, tir_black, xoria256
-colo lucius 
+colo jellybeans

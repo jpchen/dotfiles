@@ -15,6 +15,7 @@ alias ..='cd ..'
 alias speclab='ssh speclab.seas.upenn.edu'
 alias rm='rm -i'
 alias rmdir='rmdir -i'
+alias clean~='rm *.*~'
 
 #logs from pdflatex
 cleantex () {
