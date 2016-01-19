@@ -152,6 +152,19 @@ let g:Tex_DefaultTargetFormat = 'pdf' "for latex
 
 set nofoldenable    " disable folding
 
+"Commenting blocks of code.
+autocmd FileType c,cpp,java,scala          let b:comment_leader = '//'
+autocmd FileType bash,zsh,sh,ruby,python   let b:comment_leader = '#'
+autocmd FileType conf,fstab                let b:comment_leader = '# '
+autocmd FileType tex                       let b:comment_leader = '% '
+autocmd FileType mail                      let b:comment_leader = '> '
+autocmd FileType vim                       let b:comment_leader = '" '
+
+"this makes it so you can Shift-V highlight lots of text then press ,cc to
+"comment it or ,cu to uncomment.  
+noremap <silent> cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+noremap <silent> cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+
 set t_Co=256        "256 color terminal
 "lucius, lettuce, jellybeans, zenburn, mustang, leo, maroloccio, herald, inkpot,
 "kellys, tir_black, xoria256
