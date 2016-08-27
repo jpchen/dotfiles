@@ -113,7 +113,7 @@ alias tmux="tmux -2"
 alias grep='grep --color=auto'
 alias eniac='ssh jonchen@eniac.seas.upenn.edu'
 alias dolphin='sftp jonchen@origin.www.upenn.edu'
-alias speclab='ssh speclab.seas.upenn.edu'
+alias speclab='ssh jonchen@speclab.seas.upenn.edu'
 alias cleantex='rm -f *.aux; rm -f *.log'
 alias ...='../..'
 alias ..='cd ..'
@@ -122,17 +122,15 @@ alias ltr='ls -ltr'
 alias la='ls -a'
 alias desktop='ssh jpchen.desktop.amazon.com'
 alias jpchen='cd /rhel5pdi/workplace/jpchen/'
-alias wfm='cd /rhel5pdi/workplace/jpchen/workflow_manager/src/ELBWorkflowManager'
-alias oracle='sudo -u oracle ~/orcl.sh'
-alias logs='cd /rhel5pdi/workplace/jpchen/C3SController/src/C3SController/build/var/output/logs'
-alias clean~='rm -f *~'
 alias find='find . -iname '
+alias clean='find "*~" -type f -delete'
 alias more='less'
 alias irc='irssi'
 alias ks='ls'
 alias vun='vim'
 alias pgrep='pgrep -f'
 alias cleanup='find "*~" -type f -delete; find "*.swp.*" -type f -delete' 
+alias pokerun='cd /Users/jpchen/pokego-bot; ./run.sh 2> >( tee /dev/stderr | grep --line-buffered pokemon_caught >> out )'
 
 #Functions
 ## Extract Archives
@@ -191,6 +189,18 @@ note () {
 ## mkdir and cd ##
 mkcd () {
   mkdir -p $1 && cd $1
+}
+
+mic() {
+   sudo killall coreaudiod
+}
+
+jrun () {
+  str=
+  for i in "$@"; do
+    str="$str $i.java"
+  done
+  javac $1.java && java $1
 }
 
 cl (){
