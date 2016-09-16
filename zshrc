@@ -120,10 +120,10 @@ alias ..='cd ..'
 alias rm='rm -i'
 alias ltr='ls -ltr'
 alias la='ls -a'
-alias desktop='ssh jpchen.desktop.amazon.com'
-alias jpchen='cd /rhel5pdi/workplace/jpchen/'
+alias gc='git add -A .; git commit -am'
 alias find='find . -iname '
-alias clean='find "*~" -type f -delete'
+alias zshrc='source ~/.zshrc'
+alias clean='find "*~" -type f -delete -o -name "*.swp" -type f -delete'
 alias more='less'
 alias irc='irssi'
 alias ks='ls'
@@ -195,12 +195,20 @@ mic() {
    sudo killall coreaudiod
 }
 
+encrypt () {
+    zip -er $1
+}
+
 jrun () {
   str=
   for i in "$@"; do
     str="$str $i.java"
   done
   javac $1.java && java $1
+}
+
+copy () {
+  pbcopy < $1
 }
 
 cl (){

@@ -43,6 +43,10 @@ inoremap <C-U> <C-G>u<C-U>
 
 noremap <Down> gj
 noremap <Up> gk
+:command WQ wq
+:command Wq wq
+:command W w
+:command Q q
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
