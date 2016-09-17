@@ -120,7 +120,6 @@ alias ..='cd ..'
 alias rm='rm -i'
 alias ltr='ls -ltr'
 alias la='ls -a'
-alias gc='git add -A .; git commit -am'
 alias find='find . -iname '
 alias zshrc='source ~/.zshrc'
 alias clean='find "*~" -type f -delete -o -name "*.swp" -type f -delete'
@@ -131,6 +130,18 @@ alias vun='vim'
 alias pgrep='pgrep -f'
 alias cleanup='find "*~" -type f -delete; find "*.swp.*" -type f -delete' 
 alias pokerun='cd /Users/jpchen/pokego-bot; ./run.sh 2> >( tee /dev/stderr | grep --line-buffered pokemon_caught >> out )'
+
+#Git
+alias gb='git checkout'
+alias gc='git add -A .; git commit -am'
+alias gs='git status'
+alias gd='git diff'
+alias amend='git commit --amend'
+alias undo='git reset --soft HEAD~'
+alias rollback='git reset --hard'
+alias cleanws='git clean -fd'
+alias cleanws='git clean -fd'
+alias lg='git lg'
 
 #Functions
 ## Extract Archives
@@ -211,6 +222,4 @@ copy () {
   pbcopy < $1
 }
 
-cl (){
-  cd $1; ls
-}
+chpwd() ls
