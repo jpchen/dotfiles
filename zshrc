@@ -114,7 +114,7 @@ alias grep='grep --color=auto'
 alias eniac='ssh jonchen@eniac.seas.upenn.edu'
 alias dolphin='sftp jonchen@origin.www.upenn.edu'
 alias speclab='ssh jonchen@speclab.seas.upenn.edu'
-alias cleantex='rm -f *.aux; rm -f *.log'
+alias cleantex='clean; rm -f *.aux; rm -f *.log; rm -f *.out'
 alias ...='../..'
 alias ..='cd ..'
 alias rm='rm -i'
@@ -130,6 +130,10 @@ alias vun='vim'
 alias pgrep='pgrep -f'
 alias cleanup='find "*~" -type f -delete; find "*.swp.*" -type f -delete' 
 alias pokerun='cd /Users/jpchen/pokego-bot; ./run.sh 2> >( tee /dev/stderr | grep --line-buffered pokemon_caught >> out )'
+alias wp='webppl'
+alias wpv='webppl --require webppl-viz'
+alias update='git pull https://github.com/probmods/webppl.git'
+alias chrome='open -a "Google Chrome"'
 
 #Git
 alias gb='git checkout'
@@ -142,8 +146,19 @@ alias rollback='git reset --hard'
 alias cleanws='git clean -fd'
 alias cleanws='git clean -fd'
 alias lg='git lg'
+alias gl='git log'
+#compare current branch with remote branch
+compare () {
+  branch=$(git branch | grep "\*" | cut -c 3-)
+  git diff $branch origin/$branch
+}
 
 #Functions
+flush() {
+#wipe a certain type of file from current directory
+  rm -f *.$1 
+}
+
 ## Extract Archives
 extract () {
   if [ -f $1 ] ; then
@@ -151,7 +166,7 @@ extract () {
       *.tar.bz2)   tar xjvf $1    ;;
       *.tar.gz)    tar xzvf $1    ;;
       *.bz2)       bzip2 -d $1    ;;
-      *.rar)       unrar2dir $1    ;;
+      *.rar)       unrar x $1    ;;
       *.gz)        gunzip $1    ;;
       *.tar)       tar xf $1    ;;
       *.tbz2)      tar xjf $1    ;;

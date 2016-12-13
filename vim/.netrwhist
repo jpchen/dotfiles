@@ -1,4 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/Users/jpchen/jpchen.github.io/images'
 let g:netrw_dirhist_2='/Users/jpchen/jpchen.github.io/stylesheets'
+let g:netrw_dirhist_3='/Users/jpchen/jpchen.github.io/.git'
+let g:netrw_dirhist_4='/Users/jpchen/dotfiles'
+let g:netrw_dirhist_5='/Users/jpchen/slate/underdash-api/source/includes'
+let g:netrw_dirhist_6='/Users/jpchen/dotfiles'
