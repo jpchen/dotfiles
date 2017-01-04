@@ -120,8 +120,8 @@ alias ..='cd ..'
 alias rm='rm -i'
 alias ltr='ls -ltr'
 alias la='ls -a'
-alias find='find . -iname '
 alias zshrc='source ~/.zshrc'
+alias find='find . -iname'
 alias clean='find "*~" -type f -delete -o -name "*.swp" -type f -delete'
 alias more='less'
 alias irc='irssi'
@@ -134,6 +134,7 @@ alias wp='webppl'
 alias wpv='webppl --require webppl-viz'
 alias update='git pull https://github.com/probmods/webppl.git'
 alias chrome='open -a "Google Chrome"'
+alias size='du -hs'
 
 #Git
 alias gb='git checkout'
@@ -151,6 +152,19 @@ alias gl='git log'
 compare () {
   branch=$(git branch | grep "\*" | cut -c 3-)
   git diff $branch origin/$branch
+}
+
+fnd () {
+    find "*$1*"
+}
+
+dudir () {
+  (
+  for d in *
+  do
+      du -hs $d
+  done
+  ) | gsort -h
 }
 
 #Functions
