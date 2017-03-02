@@ -1,6 +1,7 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+DYLD_LIBRARY_PATH=/Users/jpchen/torch/pkg/torch/build/lib/TH/libTH.dylib:/Users/jpchen/torch/install/lib/libTH.dylib
 export TERM=xterm-256color
 export EDITOR=vim
 
@@ -110,7 +111,7 @@ autoload -U colors
 
 #aliases
 alias tmux="tmux -2"
-alias grep='grep --color=auto'
+alias grep='grep --color=auto -i'
 alias eniac='ssh jonchen@eniac.seas.upenn.edu'
 alias dolphin='sftp jonchen@origin.www.upenn.edu'
 alias speclab='ssh jonchen@speclab.seas.upenn.edu'
@@ -129,12 +130,18 @@ alias ks='ls'
 alias vun='vim'
 alias pgrep='pgrep -f'
 alias cleanup='find "*~" -type f -delete; find "*.swp.*" -type f -delete' 
+alias hd='cd /Volumes/256GHD'
+alias work='cd /Volumes/256GHD/Work'
+alias neo='cd /Volumes/256GHD/neoDownloads/'
 alias pokerun='cd /Users/jpchen/pokego-bot; ./run.sh 2> >( tee /dev/stderr | grep --line-buffered pokemon_caught >> out )'
 alias wp='webppl'
+alias wpdev='~/webppl/webppl/webppl'
 alias wpv='webppl --require webppl-viz'
 alias update='git pull https://github.com/probmods/webppl.git'
 alias chrome='open -a "Google Chrome"'
 alias size='du -hs'
+alias vd='vim -d'
+alias jeklo='jekyll build; jekyll serve --config _config_dev.yml --watch'
 
 #Git
 alias gb='git checkout'
@@ -148,6 +155,8 @@ alias cleanws='git clean -fd'
 alias cleanws='git clean -fd'
 alias lg='git lg'
 alias gl='git log'
+alias gsync='git fetch upstream; git checkout master && git merge upstream/master'
+
 #compare current branch with remote branch
 compare () {
   branch=$(git branch | grep "\*" | cut -c 3-)
@@ -167,7 +176,6 @@ dudir () {
   ) | gsort -h
 }
 
-#Functions
 flush() {
 #wipe a certain type of file from current directory
   rm -f *.$1 
@@ -252,3 +260,6 @@ copy () {
 }
 
 chpwd() ls
+
+
+. /Users/jpchen/torch/install/bin/torch-activate

@@ -14,6 +14,10 @@ if v:progname =~? "evim"
   finish
 endif
 
+"Stop making those damn ~ files
+set nobackup
+set nowritebackup
+
 " Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
@@ -21,11 +25,6 @@ set nocompatible
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
-else
-  set backup		" keep a backup file
-endif
 set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
@@ -152,24 +151,31 @@ fun! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 
-                autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 let g:Tex_DefaultTargetFormat = 'pdf' "for latex
 
 set nofoldenable    " disable folding
 
 "Commenting blocks of code.
-autocmd FileType c,cpp,java,scala          let b:comment_leader = '//'
-autocmd FileType bash,zsh,sh,ruby,python   let b:comment_leader = '#'
-autocmd FileType conf,fstab                let b:comment_leader = '# '
-autocmd FileType tex                       let b:comment_leader = '% '
-autocmd FileType mail                      let b:comment_leader = '> '
-autocmd FileType vim                       let b:comment_leader = '" '
+autocmd FileType c,cpp,java,scala,javascript,wppl             let b:comment_leader = '// '
+autocmd FileType bash,zsh,sh,ruby,python,conf,fstab           let b:comment_leader = '# '
+autocmd FileType lua                                          let b:comment_leader = '-- '
+autocmd FileType tex                                          let b:comment_leader = '% '
+autocmd FileType mail                                         let b:comment_leader = '> '
+autocmd FileType vim                                          let b:comment_leader = '" '
 
 "this makes it so you can Shift-V highlight lots of text then press ,cc to
 "comment it or ,cu to uncomment.  
 noremap <silent> cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
 noremap <silent> cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+
+"copy and paste via clipboard, works on 10.9
+vnoremap <C-c> :w !pbcopy<CR><CR> noremap <C-v> :r !pbpaste<CR><CR>
+
+"python-mode
+"let g:pymode_rope_completion = 1
+"let g:pymode_rope_complete_on_dot = 1
 
 set t_Co=256        "256 color terminal
 "lucius, lettuce, jellybeans, zenburn, mustang, leo, maroloccio, herald, inkpot,

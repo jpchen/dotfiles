@@ -1,29 +1,81 @@
-PREFIX=/usr/local
-VIMDIR=$(PREFIX)/share/vim
-BINDIR=$(PREFIX)/bin
+PLUGIN   =  $(wildcard plugin/*.vim)
+SOURCES  =  $(PLUGIN)
+LIB      =  $(wildcard autoload/*.vim)
+SOURCES  += $(LIB)
+DOC      =  $(wildcard doc/*.txt)
+SOURCES  += $(DOC)
+NAME     =  delimitMate
+VERSION  =  $(shell $(SED) -n -e '/Current \+release/{s/^ \+\([0-9.]\+\).*/\1/;p;}' $(firstword $(DOC)))
+FILENAME =  $(NAME)-$(VERSION)
+DESTDIR  =  $(HOME)/.vim
+VIM      =  vim
+SED      =  $(shell command -v gsed || command -v sed)
+PERL     =  perl
+comma    := ,
+empty    :=
+space    := $(empty) $(empty)
 
-VERSION=1.8.23
-DATE=$(shell date +%Y%m%d)
-COMMIT_COUNT=$(shell git log --oneline | wc -l)
-ABBREV_HASH=$(shell git log --oneline | head -n 1 | cut -d\  -f 1)
+.PHONY: version clean distclean undo release test install uninstall
 
-SNAPSHOTNAME=vim-latex-$(VERSION)-$(DATE).$(COMMIT_COUNT)-git$(ABBREV_HASH)
+all: zip gzip
+dist: version all
+vimball: $(FILENAME).vmb
+zip: $(FILENAME).zip $(FILENAME).vmb.zip
+gzip: $(FILENAME).tar.gz $(FILENAME).vmb.gz
 
-snapshot:
-	git archive --prefix '$(SNAPSHOTNAME)/' HEAD | gzip > '$(SNAPSHOTNAME).tar.gz'
+clean:
+	rm -f */*.orig *.~* .VimballRecord *.zip *.gz *.vmb
 
-install:
-	install -d '$(DESTDIR)$(VIMDIR)/doc'
-	install -m 0644 doc/*.txt '$(DESTDIR)$(VIMDIR)/doc'
+distclean: clean
+	-zsh -c 'setopt extendedglob; rm -f ^(README.md|Makefile|basic_vimrc)(.)'
+	-zsh -c 'setopt extendedglob; rm -f .^(git|README.md|Makefile|basic_vimrc)*'
 
-	install -d '$(DESTDIR)$(VIMDIR)'
-	cp -R compiler ftplugin indent plugin '$(DESTDIR)$(VIMDIR)'
-	chmod 0755 '$(DESTDIR)$(VIMDIR)/ftplugin/latex-suite/outline.py'
+undo:
+	for i in */*.orig; do mv -f "$$i" "$${i%.*}"; done
 
-	install -d '$(DESTDIR)$(BINDIR)'
-	install latextags ltags '$(DESTDIR)$(BINDIR)'
+version:
+	$(PERL) -i.orig -pne 'if (/^"\sVersion:/) {s/(\d+\.\S+)/$(VERSION)/}' $(PLUGIN) $(LIB)
+	$(PERL) -i.orig -pne \
+	  'if (/let\sdelimitMate_version/) {s/"(\d+\.\S+)"/"$(VERSION)"/}' $(PLUGIN)
+	$(PERL) -i.orig -pne 'if (/beasts/) {s/(v\d+\.\S+)/v$(VERSION)/}' $(DOC)
+	$(PERL) -i.orig -MPOSIX -pne \
+	  'if (/^"\sModified:/) {$$now_string = strftime "%F", localtime; s/(\d+-\d+-\d+)/$$now_string/e}' \
+	  $(PLUGIN) $(LIB)
+	$(PERL) -i.orig -MPOSIX -pne \
+	  'if (/^\s+$(VERSION)\s+\d+-\d+-\d+\s+\*/) {$$now_string = strftime "%F", localtime; s/(\d+-\d+-\d+)/$$now_string/}' \
+	  $(DOC)
 
-upload: snapshot
-	scp '$(SNAPSHOTNAME).tar.gz' frs.sourceforge.net:/home/frs/project/v/vi/vim-latex/snapshots
+test:
+	$(MAKE) -C test
 
-.PHONY: install upload
+install: $(SOURCES)
+	for dir in $(^D);\
+  do install -d -m 0755 $(DESTDIR)$(PREFIX)/$$dir;\
+done;\
+for file in $^;\
+  do install -m 0644 $$file $(DESTDIR)$(PREFIX)/$$file;\
+done;
+
+uninstall:
+	for file in $(SOURCES);\
+  do rm -f $(DESTDIR)$(PREFIX)/$$file;\
+done;
+
+%.vmb: $(SOURCES)
+	$(VIM) -N -es -u NORC \
+  -c 'call setline(1,["$(subst $(space),"$(comma)",$^)"])'\
+  -c "%MkVimball! $(basename $@) ." -c 'q!'
+
+%.vmb.zip: vimball
+	zip $@ $(basename $@)
+
+%.zip: $(SOURCES)
+	zip $@ $^
+
+%.vmb.gz: vimball
+	gzip -f < $(basename $@) > $@
+
+%.tar.gz: $(SOURCES)
+	tar -cvzf $@ $^
+
+# vim:ts=2:sw=2
