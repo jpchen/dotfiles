@@ -1,5 +1,11 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_cnt =9
 let g:netrw_dirhist_1='/Users/jpchen/jpchen.github.io/ski'
 let g:netrw_dirhist_2='/Users/jpchen/deep-learning/tensorflow/vae'
 let g:netrw_dirhist_3='/Users/jpchen'
+let g:netrw_dirhist_4='/Users/jpchen/torch/pkg/torch/lib/TH/CMakeFiles/TH.dir'
+let g:netrw_dirhist_5='/Volumes/256GHD/Work/paultorchjs/torch.js/thlib'
+let g:netrw_dirhist_6='/Users/jpchen/adnn/test'
+let g:netrw_dirhist_7='/Users/jpchen/jstorch/torch.js'
+let g:netrw_dirhist_8='/Volumes/256GHD/Work/paultorchjs/torch.js/thlib/Cmake'
+let g:netrw_dirhist_9='/Users/jpchen/Documents/CIS371'

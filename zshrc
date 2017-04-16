@@ -1,7 +1,7 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-DYLD_LIBRARY_PATH=/Users/jpchen/torch/pkg/torch/build/lib/TH/libTH.dylib:/Users/jpchen/torch/install/lib/libTH.dylib
+DYLD_LIBRARY_PATH=/Users/jpchen/torch/pkg/torch/build/lib/TH/libTH.dylib:/Users/jpchen/torch/install/lib/libTH.dylib:/Users/jpchen/torch/pkg/torch/lib/TH/libmTH.dylib:/Volumes/256GHD/Work/paultorchjs/torch.js/thlib/libmTH.dylib
 export TERM=xterm-256color
 export EDITOR=vim
 
@@ -111,7 +111,7 @@ autoload -U colors
 
 #aliases
 alias tmux="tmux -2"
-alias grep='grep --color=auto -i'
+alias igrep='grep --color=auto -i'
 alias eniac='ssh jonchen@eniac.seas.upenn.edu'
 alias dolphin='sftp jonchen@origin.www.upenn.edu'
 alias speclab='ssh jonchen@speclab.seas.upenn.edu'
@@ -142,6 +142,8 @@ alias chrome='open -a "Google Chrome"'
 alias size='du -hs'
 alias vd='vim -d'
 alias jeklo='jekyll build; jekyll serve --config _config_dev.yml --watch'
+# alias mic='sudo killall coreaudiod'
+alias finder='sudo killall Finder'
 
 #Git
 alias gb='git checkout'
@@ -155,12 +157,21 @@ alias cleanws='git clean -fd'
 alias cleanws='git clean -fd'
 alias lg='git lg'
 alias gl='git log'
-alias gsync='git fetch upstream; git checkout master && git merge upstream/master'
+alias gsyncm='git fetch upstream; git checkout master && git merge upstream/master'
+alias syncwppl='git fetch upstream; git checkout master && git merge upstream/dev'
 
 #compare current branch with remote branch
 compare () {
   branch=$(git branch | grep "\*" | cut -c 3-)
   git diff $branch origin/$branch
+}
+
+loop () {
+  if [ $# -lt 2 ]
+  then
+      echo "loop i [command]"
+  fi
+  for i in {1.."$1"}; do "${@:2}"; done
 }
 
 fnd () {
@@ -239,12 +250,9 @@ mkcd () {
   mkdir -p $1 && cd $1
 }
 
-mic() {
-   sudo killall coreaudiod
-}
-
 encrypt () {
-    zip -er $1
+    # Usage: zip -er [file.zip] files
+    zip -er $@
 }
 
 jrun () {
@@ -257,6 +265,25 @@ jrun () {
 
 copy () {
   pbcopy < $1
+}
+
+dim () {
+#!/usr/bin/env bash
+
+filename=$1
+
+if [ ! -f "$filename" ] ; then
+    echo "$filename not found!";
+    exit 1
+fi
+
+w=$( sips -g pixelWidth "$filename" | tail -n1 | cut -d" " -f4 )
+h=$( sips -g pixelHeight "$filename" | tail -n1 | cut -d" " -f4 )
+
+echo "width: $w"
+echo "height: $h"
+# To display in Finder notification, uncomment below
+#osascript -e "tell application \"Finder\" to {activate, display alert \"$filename\\nWidth: $w\\nHeight: $h\"}"
 }
 
 chpwd() ls
