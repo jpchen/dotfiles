@@ -47,10 +47,6 @@ noremap <Up> gk
 :command W w
 :command Q q
 
-" In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-  set mouse=a
-endif
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -164,6 +160,7 @@ autocmd FileType lua                                          let b:comment_lead
 autocmd FileType tex                                          let b:comment_leader = '% '
 autocmd FileType mail                                         let b:comment_leader = '> '
 autocmd FileType vim                                          let b:comment_leader = '" '
+autocmd FileType rst                                          let b:comment_leader = '.. '
 
 "this makes it so you can Shift-V highlight lots of text then press ,cc to
 "comment it or ,cu to uncomment.  
@@ -179,5 +176,5 @@ noremap <silent> cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<C
 
 set t_Co=256        "256 color terminal
 "lucius, lettuce, jellybeans, zenburn, mustang, leo, maroloccio, herald, inkpot,
-"kellys, tir_black, xoria256
-colo jellybeans
+"kellys, tir_black, xoria256. molokai
+colo tir_black 

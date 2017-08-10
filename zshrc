@@ -1,7 +1,8 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-DYLD_LIBRARY_PATH=/Users/jpchen/torch/pkg/torch/build/lib/TH/libTH.dylib:/Users/jpchen/torch/install/lib/libTH.dylib:/Users/jpchen/torch/pkg/torch/lib/TH/libmTH.dylib:/Volumes/256GHD/Work/paultorchjs/torch.js/thlib/libmTH.dylib
+export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export PYTHONPATH=$PYTHONPATH:/Users/jpchen/Uber/pyro # Add RVM to PATH for scripting
+export DYLD_LIBRARY_PATH=/Users/jpchen/torch/pkg/torch/build/lib/TH/libTH.dylib:/Users/jpchen/torch/install/lib/libTH.dylib:/Users/jpchen/torch/pkg/torch/lib/TH/libmTH.dylib
 export TERM=xterm-256color
 export EDITOR=vim
 
@@ -91,11 +92,15 @@ setopt COMPLETE_IN_WORD
 #emacs key bindings
 bindkey -e
 
+#make command backsapce delete left of cursor in iterm
+# map to 0x18 0x7f
+bindkey "^X\\x7f" backward-kill-line
+
 ## history
 setopt APPEND_HISTORY
 ## for sharing history between zsh processes
 setopt INC_APPEND_HISTORY
-setopt SHARE_HISTORY
+# setopt SHARE_HISTORY
 
 ## never ever beep ever
 #setopt NO_BEEP
@@ -111,7 +116,7 @@ autoload -U colors
 
 #aliases
 alias tmux="tmux -2"
-alias igrep='grep --color=auto -i'
+alias igrep='grep --color=auto -i --exclude-dir=node_modules'
 alias eniac='ssh jonchen@eniac.seas.upenn.edu'
 alias dolphin='sftp jonchen@origin.www.upenn.edu'
 alias speclab='ssh jonchen@speclab.seas.upenn.edu'
@@ -123,7 +128,7 @@ alias ltr='ls -ltr'
 alias la='ls -a'
 alias zshrc='source ~/.zshrc'
 alias find='find . -iname'
-alias clean='find "*~" -type f -delete -o -name "*.swp" -type f -delete'
+alias clean='find "*~" -type f -delete -o -name "*.swp" -type f -delete -o -name "*.pyc" -type f -delete'
 alias more='less'
 alias irc='irssi'
 alias ks='ls'
@@ -144,10 +149,27 @@ alias vd='vim -d'
 alias jeklo='jekyll build; jekyll serve --config _config_dev.yml --watch'
 # alias mic='sudo killall coreaudiod'
 alias finder='sudo killall Finder'
+alias stfu='defaults write com.apple.PowerChime ChimeOnAllHardware -bool false;killall PowerChime'
+alias visdom='python -m visdom.server'
+alias venv='virtualenv'
+alias activate='source .venv/bin/activate'
+
+# Uber
+alias uber='cd /Users/jpchen/Uber'
+alias pyro='cd /Users/jpchen/Uber/pyro'
+alias mani='cd /Users/jpchen/Uber/manifold'
+alias testall='pyro; python -m unittest discover -v'
+alias testdist='pyro; python -m unittest -v tests.test_distributions'
+alias testinf='pyro; python -m unittest -v tests.test_inference'
+# allows git ssh without pw
+alias ugit='ssh-add -A'
+alias m='mosh anton'
+alias anton='ssh anton'
 
 #Git
-alias gb='git checkout'
-alias gc='git add -A .; git commit -am'
+alias gb='git branch'
+alias gc='git checkout'
+alias gac='git add -A .; git commit -am'
 alias gs='git status'
 alias gd='git diff'
 alias amend='git commit --amend'
@@ -157,6 +179,9 @@ alias cleanws='git clean -fd'
 alias cleanws='git clean -fd'
 alias lg='git lg'
 alias gl='git log'
+alias gpop='git reset HEAD~'
+alias gundo='git reset "HEAD@{1}"'
+alias restore='git checkout --'
 alias gsyncm='git fetch upstream; git checkout master && git merge upstream/master'
 alias syncwppl='git fetch upstream; git checkout master && git merge upstream/dev'
 
@@ -289,4 +314,4 @@ echo "height: $h"
 chpwd() ls
 
 
-. /Users/jpchen/torch/install/bin/torch-activate
+# . /Users/jpchen/torch/install/bin/torch-activate
