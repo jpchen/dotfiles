@@ -1,8 +1,9 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-export PYTHONPATH=$PYTHONPATH:/Users/jpchen/Uber/pyro # Add RVM to PATH for scripting
-export DYLD_LIBRARY_PATH=/Users/jpchen/torch/pkg/torch/build/lib/TH/libTH.dylib:/Users/jpchen/torch/install/lib/libTH.dylib:/Users/jpchen/torch/pkg/torch/lib/TH/libmTH.dylib
+export PATH="/home/jpchen/miniconda2/bin:$PATH"
+export PYTHONPATH=$PYTHONPATH:/home/jpchen/Uber/pyro # Add RVM to PATH for scripting
+export DYLD_LIBRARY_PATH=/home/jpchen/torch/pkg/torch/build/lib/TH/libTH.dylib:/home/jpchen/torch/install/lib/libTH.dylib:/home/jpchen/torch/pkg/torch/lib/TH/libmTH.dylib
 export TERM=xterm-256color
 export EDITOR=vim
 
@@ -151,13 +152,23 @@ alias jeklo='jekyll build; jekyll serve --config _config_dev.yml --watch'
 alias finder='sudo killall Finder'
 alias stfu='defaults write com.apple.PowerChime ChimeOnAllHardware -bool false;killall PowerChime'
 alias visdom='python -m visdom.server'
+
+# Conda
+# https://conda.io/docs/using/pkgs.html
+alias c='conda'
+alias cenv='conda env list'
+alias clist='conda list'
+alias crm='conda remove -an'
+alias activate='source activate'
+alias deactivate='source deactivate'
+#virtualenv
 alias venv='virtualenv'
-alias activate='source .venv/bin/activate'
+# alias activate='source .venv/bin/activate'
 
 # Uber
-alias uber='cd /Users/jpchen/Uber'
-alias pyro='cd /Users/jpchen/Uber/pyro'
-alias mani='cd /Users/jpchen/Uber/manifold'
+alias uber='cd /home/jpchen/Uber'
+alias pyro='cd /home/jpchen/Uber/pyro'
+alias mani='cd /home/jpchen/Uber/manifold'
 alias testall='pyro; python -m unittest discover -v'
 alias testdist='pyro; python -m unittest -v tests.test_distributions'
 alias testinf='pyro; python -m unittest -v tests.test_inference'
@@ -315,3 +326,18 @@ chpwd() ls
 
 
 # . /Users/jpchen/torch/install/bin/torch-activate
+
+
+# =======
+# UBER
+# ======
+export UBER_LDAP_UID=jpchen
+export UBER_HOME=/home/jpchen/Uber
+export UBER_EMAIL=jpchen@uber.com
+export UBER_OWNER=jpchen@uber.com
+export VAGRANT_DEFAULT_PROVIDER=aws
+export UBER_LDAP_UID=jpchen
+export UBER_HOME=/home/jpchen/Uber
+export UBER_EMAIL=jpchen@uber.com
+export UBER_OWNER=jpchen@uber.com
+export VAGRANT_DEFAULT_PROVIDER=aws
