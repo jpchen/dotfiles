@@ -26,7 +26,7 @@
 #c.InteractiveShellApp.exec_PYTHONSTARTUP = True
 
 ## List of files to run at IPython startup.
-#c.InteractiveShellApp.exec_files = []
+c.InteractiveShellApp.exec_files = ['/Users/jpchen/Uber/imports.py']
 
 ## lines of code to run at IPython startup.
 #c.InteractiveShellApp.exec_lines = []

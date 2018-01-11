@@ -1,8 +1,9 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" 
 export PATH=$PATH:$HOME/anaconda/bin # conda
-export PYTHONPATH=$PYTHONPATH:/Users/jpchen/Uber/pyro # Add RVM to PATH for scripting
+export PYTHONPATH=$PYTHONPATH:/Users/jpchen/Uber/pyro # run pyro locally
 export DYLD_LIBRARY_PATH=/Users/jpchen/torch/pkg/torch/build/lib/TH/libTH.dylib:/Users/jpchen/torch/install/lib/libTH.dylib:/Users/jpchen/torch/pkg/torch/lib/TH/libmTH.dylib
 export TERM=xterm-256color
 export EDITOR=vim
@@ -12,6 +13,9 @@ export EDITOR=vim
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="robbyrussell"
+# prepend %{$fg_bold[white]%}%M
+# in ~/.oh-my.zsh/themes/robbyrussell.zsh-theme
+# for ssh machines to show machine name
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -149,15 +153,19 @@ alias size='du -hs'
 alias vd='vim -d'
 alias jeklo='jekyll build; jekyll serve --config _config_dev.yml --watch'
 # alias mic='sudo killall coreaudiod'
+alias mic='sudo kill -9 `ps ax|grep 'coreaudio[a-z]' | awk '{print $1}'`'
 alias finder='sudo killall Finder'
 alias stfu='defaults write com.apple.PowerChime ChimeOnAllHardware -bool false;killall PowerChime'
 alias visdom='python -m visdom.server'
+alias jupno='jupyter notebook'
+alias jupconv='jupyter nbconvert --to'
 
 # Conda
 # https://conda.io/docs/using/pkgs.html
 alias c='conda'
 alias cenv='conda env list'
 alias clist='conda list'
+alias ccreate='conda create -n'
 alias crm='conda remove -an'
 alias activate='source activate'
 alias deactivate='source deactivate'
@@ -177,6 +185,8 @@ alias testinf='pyro; python -m unittest -v tests.test_inference'
 alias ugit='ssh-add -A'
 alias m='mosh anton'
 alias anton='ssh anton'
+alias antongui='ssh -X anton'
+alias discourse='ssh -i ~/aws_keypair_pyro.pem bitnami@18.221.63.130'
 
 #Git
 alias gb='git branch'
@@ -184,23 +194,29 @@ alias gc='git checkout'
 alias gac='git add -A .; git commit -am'
 alias gs='git status'
 alias gd='git diff'
+# diff between last two commits
+alias gsh='git show'
 alias amend='git commit --amend'
 alias undo='git reset --soft HEAD~'
+# deletes commit and changes in working tree.
 alias rollback='git reset --hard'
-alias cleanws='git clean -fd'
 alias cleanws='git clean -fd'
 alias lg='git lg'
 alias gl='git log'
+# undo last commit, does not touch working tree.
 alias gpop='git reset HEAD~'
+# undo previous command
 alias gundo='git reset "HEAD@{1}"'
-alias restore='git checkout --'
+# revert uncommitted/unstaged changes for one file/path
+alias revert='git checkout --'
+alias gprune=' git fetch --all --prune'
 alias gsyncm='git fetch upstream; git checkout master && git merge upstream/master'
 alias syncwppl='git fetch upstream; git checkout master && git merge upstream/dev'
 
 #compare current branch with remote branch
 compare () {
   branch=$(git branch | grep "\*" | cut -c 3-)
-  git diff $branch origin/$branch
+  git diff origin/$branch $branch
 }
 
 loop () {
@@ -332,11 +348,6 @@ chpwd() ls
 # =======
 # UBER
 # ======
-export UBER_LDAP_UID=jpchen
-export UBER_HOME=/home/jpchen/Uber
-export UBER_EMAIL=jpchen@uber.com
-export UBER_OWNER=jpchen@uber.com
-export VAGRANT_DEFAULT_PROVIDER=aws
 export UBER_LDAP_UID=jpchen
 export UBER_HOME=/home/jpchen/Uber
 export UBER_EMAIL=jpchen@uber.com
