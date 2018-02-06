@@ -3,6 +3,7 @@ export ZSH=$HOME/.oh-my-zsh
 export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" 
 export PATH=$PATH:$HOME/anaconda/bin # conda
+export PATH=$PATH:$HOME/.opus/bin # opus
 export PYTHONPATH=$PYTHONPATH:/Users/jpchen/Uber/pyro # run pyro locally
 export DYLD_LIBRARY_PATH=/Users/jpchen/torch/pkg/torch/build/lib/TH/libTH.dylib:/Users/jpchen/torch/install/lib/libTH.dylib:/Users/jpchen/torch/pkg/torch/lib/TH/libmTH.dylib
 export TERM=xterm-256color
@@ -153,25 +154,38 @@ alias size='du -hs'
 alias vd='vim -d'
 alias jeklo='jekyll build; jekyll serve --config _config_dev.yml --watch'
 # alias mic='sudo killall coreaudiod'
-alias mic='sudo kill -9 `ps ax|grep 'coreaudio[a-z]' | awk '{print $1}'`'
+alias mic="sudo kill -9 `ps ax|grep 'coreaudio[a-z]' | awk '{print $1}'`"
 alias finder='sudo killall Finder'
 alias stfu='defaults write com.apple.PowerChime ChimeOnAllHardware -bool false;killall PowerChime'
 alias visdom='python -m visdom.server'
 alias jupno='jupyter notebook'
 alias jupconv='jupyter nbconvert --to'
+# https://gist.github.com/MohamedAlaa/2961058
+alias tnew='tmux new -s'
+alias tkill='tmux kill-session -t'
 
 # Conda
 # https://conda.io/docs/using/pkgs.html
 alias c='conda'
 alias cenv='conda env list'
 alias clist='conda list'
+# for py3, "ccreate -n name python=3.6"
 alias ccreate='conda create -n'
+alias cinstall='conda install'
 alias crm='conda remove -an'
+alias cenvrm='conda env remove -n'
 alias activate='source activate'
 alias deactivate='source deactivate'
 #virtualenv
 alias venv='virtualenv'
 # alias activate='source .venv/bin/activate'
+cclone () {
+  if [ $# -lt 2 ]
+  then
+    echo "ccreate newenv oldenv"
+  fi
+  conda create --name "$1" --clone "$2"; activate "$1"
+}
 
 
 # Uber
@@ -353,3 +367,6 @@ export UBER_HOME=/home/jpchen/Uber
 export UBER_EMAIL=jpchen@uber.com
 export UBER_OWNER=jpchen@uber.com
 export VAGRANT_DEFAULT_PROVIDER=aws
+source /home/jpchen/.opus/conf/opus_profile
+
+brew analytics off 2>&1 >/dev/null
