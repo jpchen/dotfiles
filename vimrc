@@ -1,13 +1,4 @@
-" An example for a vimrc file.
-"
-" Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last change:	2008 Dec 17
-"
-" To use it, copy it to
-"     for Unix and OS/2:  ~/.vimrc
-"	      for Amiga:  s:.vimrc
-"  for MS-DOS and Win32:  $VIM\_vimrc
-"	    for OpenVMS:  sys$login:.vimrc
+" jpchen@ vimrc file.
 
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
@@ -119,7 +110,11 @@ filetype indent on
 " The following changes the default filetype back to 'tex':
 let g:tex_flavor='latex'
 
+" line numbers
 set nu
+
+"split pane to the right
+set splitright
 
 " size of a hard tabstop
 set tabstop=4
@@ -175,6 +170,6 @@ noremap <silent> cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<C
 "let g:pymode_rope_complete_on_dot = 1
 
 set t_Co=256        "256 color terminal
-"lucius, lettuce, jellybeans, zenburn, mustang, leo, maroloccio, herald, inkpot,
+"lucid, lettuce, jellybeans, zenburn, mustang, leo, maroloccio, herald, inkpot,
 "kellys, tir_black, xoria256. molokai
-colo tir_black 
+colo lucid
