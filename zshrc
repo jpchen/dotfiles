@@ -4,6 +4,8 @@ export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" 
 export PATH=$PATH:$HOME/anaconda/bin # conda
 export PATH=$PATH:$HOME/.opus/bin # opus
+export PATH=$PATH:/usr/local/opt/openssl/bin #opencv/cv2 stuff
+export PATH=$PATH:/usr/local/sbin/
 export PYTHONPATH=$PYTHONPATH:/Users/jpchen/Uber/pyro # run pyro locally
 export DYLD_LIBRARY_PATH=/Users/jpchen/torch/pkg/torch/build/lib/TH/libTH.dylib:/Users/jpchen/torch/install/lib/libTH.dylib:/Users/jpchen/torch/pkg/torch/lib/TH/libmTH.dylib
 export TERM=xterm-256color
@@ -133,14 +135,14 @@ alias rm='rm -i'
 alias ltr='ls -ltr'
 alias la='ls -a'
 alias zshrc='source ~/.zshrc'
-alias find='find . -iname'
-alias clean='find "*~" -type f -delete -o -name "*.swp" -type f -delete -o -name "*.pyc" -type f -delete'
+alias ifind='find . -iname'
+alias clean='ifind "*~" -type f -delete -o -name "*.swp" -type f -delete -o -name "*.pyc" -type f -delete'
 alias more='less'
 alias irc='irssi'
 alias ks='ls'
 alias vun='vim'
 alias pgrep='pgrep -f'
-alias cleanup='find "*~" -type f -delete; find "*.swp.*" -type f -delete' 
+alias cleanup='ifind "*~" -type f -delete; ifind "*.swp.*" -type f -delete' 
 alias hd='cd /Volumes/256GHD'
 alias work='cd /Volumes/256GHD/Work'
 alias neo='cd /Volumes/256GHD/neoDownloads/'
@@ -172,9 +174,9 @@ alias clist='conda list'
 # for py3, "ccreate -n name python=3.6"
 alias ccreate='conda create -n'
 alias cinstall='conda install'
-alias crm='conda remove -an'
+alias crm='conda env remove -n'
 alias cenvrm='conda env remove -n'
-alias activate='source activate'
+alias activate='deactivate; source activate'
 alias deactivate='source deactivate'
 #virtualenv
 alias venv='virtualenv'
@@ -182,7 +184,8 @@ alias venv='virtualenv'
 cclone () {
   if [ $# -lt 2 ]
   then
-    echo "ccreate newenv oldenv"
+    echo "cclone newenv oldenv"
+    return
   fi
   conda create --name "$1" --clone "$2"; activate "$1"
 }
@@ -191,6 +194,8 @@ cclone () {
 # Uber
 alias uber='cd /Users/jpchen/Uber'
 alias pyro='cd /Users/jpchen/Uber/pyro'
+alias iei='cd /Users/jpchen/Uber/iei/pyro-apps/iei'
+alias ig='cd /Users/jpchen/Uber/iei/pyro-apps/ig'
 alias mani='cd /Users/jpchen/Uber/manifold'
 alias testall='pyro; python -m unittest discover -v'
 alias testdist='pyro; python -m unittest -v tests.test_distributions'
@@ -201,6 +206,10 @@ alias m='mosh anton'
 alias anton='ssh anton'
 alias antongui='ssh -X anton'
 alias discourse='ssh -i ~/aws_keypair_pyro.pem bitnami@18.221.63.130'
+ssh-port () {
+  ssh -nNT -L "$1":localhost:8888 anton
+}
+alias mvim='vim' #some fucking uber arc bullshit script
 
 #Git
 alias gb='git branch'
@@ -237,21 +246,32 @@ loop () {
   if [ $# -lt 2 ]
   then
       echo "loop i [command]"
+      return
   fi
   for i in {1.."$1"}; do "${@:2}"; done
 }
 
 fnd () {
-    find "*$1*"
+    ifind "*$1*"
 }
 
 dudir () {
   (
   for d in *
   do
-      du -hs $d
+      sudo du -hs $d
   done
   ) | gsort -h
+}
+
+replace() {
+# recursively replace string 1 with string 2
+  if [ $# -lt 2 ]
+  then
+      echo "replace arg1 with arg2 in all python files recursively"
+      return
+  fi
+  LC_CTYPE=C LANG=C find . -type f -name '*.py' -exec sed -i '' s/$1/$2/ {} +
 }
 
 flush() {
@@ -367,6 +387,32 @@ export UBER_HOME=/home/jpchen/Uber
 export UBER_EMAIL=jpchen@uber.com
 export UBER_OWNER=jpchen@uber.com
 export VAGRANT_DEFAULT_PROVIDER=aws
-source /home/jpchen/.opus/conf/opus_profile
+alias qs='quicksilver'
+alias kill-opus-tunnels="ps aux | grep 'ssh -fN' | grep -v grep | awk '{print \$2}' | xargs -I {} kill {}; ps aux | grep 'ssh -D 8127 -f -C' | grep -v grep | awk '{print \$2}' | xargs -I {} kill {}"
+alias opus-tunnels="kill-opus-tunnels; ussh -D 8127 -f -C -q -N bastion02-sjc1; ussh -fNL 5000:localhost:5000 opusprod830-wbu2; ssh -fNL 4587:artifactory.uber.internal:4587 bastion01-sjc1; ssh -fN -i ~/.docker/machine/machines/default/id_rsa -R 5000:localhost:5000 docker@\`docker-machine ip default\`"
+alias opusbox='ssh opuscpu15-wbu2'
+alias opusroot='ssh -A -o StrictHostKeyChecking=no -p 31021 root@opusgpu86-wbu2'
+
+
+# HADOOP
+export HADOOP_VERSION=3.1.1
+export HADOOP_PREFIX=/usr/local/Cellar/hadoop/$HADOOP_VERSION/libexec
+export HADOOP_HOME=$HADOOP_PREFIX
+export HADOOP_CONF_DIR=$HADOOP_PREFIX/etc/hadoop/
+export PATH=$HADOOP_HOME/bin:$PATH
+
+#JAVA
+export JAVA_HOME=$(/usr/libexec/java_home)
+export PATH=$JAVA_HOME/bin:$PATH
 
 brew analytics off 2>&1 >/dev/null
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/jpchen/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/jpchen/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/jpchen/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/jpchen/google-cloud-sdk/completion.zsh.inc'; fi
+autoload -U +X compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+source /usr/local/etc/bash_completion.d/opus_command_completion
+source /Users/jpchen/.opus/conf/opus_profile
