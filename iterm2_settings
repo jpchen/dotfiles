@@ -2,3 +2,8 @@ Sane scrolling:
   preferences -> keys -> key mappings
   control tab -> next tab
   control shift tab -> previous tab
+
+for jumping word and deleting lines:
+    Go to Preferences... > Profiles > Keys
+    Press Load Preset...
+    Select Natural Text Editing
