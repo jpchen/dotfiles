@@ -2,14 +2,17 @@
 export ZSH=$HOME/.oh-my-zsh
 export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" 
-export PATH=$PATH:$HOME/anaconda/bin # conda
-export PATH=$PATH:$HOME/.opus/bin # opus
+export PATH=$PATH:$HOME/miniconda3/bin # conda
+# export PATH=$PATH:$HOME/.opus/bin # opus
+# for facebook
+export PATH=$PATH:/opt/facebook/nuclide/latest/nuclide/pkg/fb-on-demand-cli/bin/
 export PATH=$PATH:/usr/local/opt/openssl/bin #opencv/cv2 stuff
 export PATH=$PATH:/usr/local/sbin/
-export PYTHONPATH=$PYTHONPATH:/Users/jpchen/Uber/pyro # run pyro locally
+# export PYTHONPATH=$PYTHONPATH:/Users/jpchen/Uber/pyro # run pyro locally
 export DYLD_LIBRARY_PATH=/Users/jpchen/torch/pkg/torch/build/lib/TH/libTH.dylib:/Users/jpchen/torch/install/lib/libTH.dylib:/Users/jpchen/torch/pkg/torch/lib/TH/libmTH.dylib
 export TERM=xterm-256color
 export EDITOR=vim
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -171,13 +174,13 @@ alias tkill='tmux kill-session -t'
 alias c='conda'
 alias cenv='conda env list'
 alias clist='conda list'
-# for py3, "ccreate -n name python=3.6"
+# for py3, "ccreate name python=3.6"
 alias ccreate='conda create -n'
 alias cinstall='conda install'
 alias crm='conda env remove -n'
 alias cenvrm='conda env remove -n'
-alias activate='deactivate; source activate'
-alias deactivate='source deactivate'
+alias activate='deactivate; conda activate'
+alias deactivate='conda deactivate'
 #virtualenv
 alias venv='virtualenv'
 # alias activate='source .venv/bin/activate'
@@ -193,7 +196,7 @@ cclone () {
 
 # Uber
 alias uber='cd /Users/jpchen/Uber'
-alias pyro='cd /Users/jpchen/Uber/pyro'
+alias pyro='cd /Users/jpchen/pyro'
 alias iei='cd /Users/jpchen/Uber/iei/pyro-apps/iei'
 alias ig='cd /Users/jpchen/Uber/iei/pyro-apps/ig'
 alias mani='cd /Users/jpchen/Uber/manifold'
@@ -210,6 +213,15 @@ ssh-port () {
   ssh -nNT -L "$1":localhost:8888 anton
 }
 alias mvim='vim' #some fucking uber arc bullshit script
+
+# FB
+alias odm='ondemand' #some fucking uber arc bullshit script
+# mercurial:
+# https://our.internmc.facebook.com/intern/wiki/Mercurial-workflow/cheat-sheet/
+alias hgd='hg diff'
+alias hgs='hg status'
+alias hgb='hg book'
+
 
 #Git
 alias gb='git branch'
@@ -235,6 +247,41 @@ alias revert='git checkout --'
 alias gprune=' git fetch --all --prune'
 alias gsyncm='git fetch upstream; git checkout master && git merge upstream/master'
 alias syncwppl='git fetch upstream; git checkout master && git merge upstream/dev'
+
+
+# convert git commands to hg
+githg() {
+  if [ $# -lt 1 ]
+  then
+      echo "githg [git command]"
+      return
+  fi
+  echo "https://our.internmc.facebook.com/intern/wiki/Mercurial-workflow/cheat-sheet/"
+  case $@ in
+    branch)       CMD="hg book";;
+    "checkout -b")  CMD="hg book -r";;
+    checkout)     CMD="hg checkout";;
+    add)          CMD="hg add";;
+    mv)           CMD="hg rename";;
+    "add -A .")     CMD="hg addremove";;
+    "checkout --")     CMD="hg revert";;
+    "reset --hard")    CMD="hg update --clean -r .";;
+    "clean -f")    CMD="hg purge --files";;
+    "gc")    CMD="hg gc";;
+    "grep")    CMD="hg grep";;
+    "commit")    CMD="hg commit";;
+    "commit --amend")    CMD="hg amend";;
+    "stash")    CMD="hg shelve";;
+    "stash pop")    CMD="hg unshelve";;
+    "reset --soft HEAD^")    CMD="hg uncommit\nOR\nhg undo --keep";;
+    "reflog")    CMD="hg journal";;
+    "reset commit")    CMD="hg unhide <commit>";;
+    *)           echo "'$@' not supported."   ;;
+  esac
+  echo $CMD
+#   eval $CMD
+}
+
 
 #compare current branch with remote branch
 compare () {
@@ -414,5 +461,48 @@ if [ -f '/Users/jpchen/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/jpc
 if [ -f '/Users/jpchen/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/jpchen/google-cloud-sdk/completion.zsh.inc'; fi
 autoload -U +X compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
-source /usr/local/etc/bash_completion.d/opus_command_completion
-source /Users/jpchen/.opus/conf/opus_profile
+# source /usr/local/etc/bash_completion.d/opus_command_completion
+# source /Users/jpchen/.opus/conf/opus_profile
+
+# added by setup_fb4a.sh
+export ANDROID_SDK=/opt/android_sdk
+export ANDROID_NDK_REPOSITORY=/opt/android_ndk
+export ANDROID_HOME=${ANDROID_SDK}
+export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/tools/bin:${ANDROID_SDK}/platform-tools
+export FBANDROID_DIR=/Users/jpchen/fbsource/fbandroid
+alias quicklog_update=/Users/jpchen/fbsource/fbandroid/scripts/quicklog/quicklog_update.sh
+alias qlu=quicklog_update
+
+# added by setup_fb4a.sh
+export ANDROID_SDK=/opt/android_sdk
+export ANDROID_NDK_REPOSITORY=/opt/android_ndk
+export ANDROID_HOME=${ANDROID_SDK}
+export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/tools/bin:${ANDROID_SDK}/platform-tools
+
+# added by setup_fb4a.sh
+export ANDROID_SDK=/opt/android_sdk
+export ANDROID_NDK_REPOSITORY=/opt/android_ndk
+export ANDROID_HOME=${ANDROID_SDK}
+export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/tools/bin:${ANDROID_SDK}/platform-tools
+
+# added by setup_fb4a.sh
+export ANDROID_SDK=/opt/android_sdk
+export ANDROID_NDK_REPOSITORY=/opt/android_ndk
+export ANDROID_HOME=${ANDROID_SDK}
+export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/tools/bin:${ANDROID_SDK}/platform-tools
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/jpchen/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/jpchen/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/jpchen/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/jpchen/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
