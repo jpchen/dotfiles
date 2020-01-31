@@ -214,6 +214,13 @@ ssh-port () {
 }
 alias mvim='vim' #some fucking uber arc bullshit script
 
+# terminal-notifier
+# iTerm > Preferences > Profiles > (Your profile) > Advanced > Triggers
+# Action: Run Coprocess...
+# Parameters: /usr/local/bin/terminal-notifier -activate com.googlecode.iterm
+# -title "DONE" -message ""
+alias fin='echo DONE'
+
 # FB
 alias odm='ondemand' #some fucking uber arc bullshit script
 # mercurial:
@@ -221,6 +228,7 @@ alias odm='ondemand' #some fucking uber arc bullshit script
 alias hgd='hg diff'
 alias hgs='hg status'
 alias hgb='hg book'
+alias dev='ssh devserver'
 
 
 #Git
@@ -473,24 +481,6 @@ export FBANDROID_DIR=/Users/jpchen/fbsource/fbandroid
 alias quicklog_update=/Users/jpchen/fbsource/fbandroid/scripts/quicklog/quicklog_update.sh
 alias qlu=quicklog_update
 
-# added by setup_fb4a.sh
-export ANDROID_SDK=/opt/android_sdk
-export ANDROID_NDK_REPOSITORY=/opt/android_ndk
-export ANDROID_HOME=${ANDROID_SDK}
-export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/tools/bin:${ANDROID_SDK}/platform-tools
-
-# added by setup_fb4a.sh
-export ANDROID_SDK=/opt/android_sdk
-export ANDROID_NDK_REPOSITORY=/opt/android_ndk
-export ANDROID_HOME=${ANDROID_SDK}
-export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/tools/bin:${ANDROID_SDK}/platform-tools
-
-# added by setup_fb4a.sh
-export ANDROID_SDK=/opt/android_sdk
-export ANDROID_NDK_REPOSITORY=/opt/android_ndk
-export ANDROID_HOME=${ANDROID_SDK}
-export PATH=${PATH}:${ANDROID_SDK}/tools:${ANDROID_SDK}/tools/bin:${ANDROID_SDK}/platform-tools
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/Users/jpchen/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -506,3 +496,6 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# show hostname in the prompt
+# PROMPT="%{$fg[white]%}%n@%{$fg[green]%}%m%{$reset_color%} ${PROMPT}"
+export $EDITOR=vim
