@@ -1,6 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export PATH=$PATH:$HOME/.rvm/bin:$HOME/.gem/ruby/2.6.0/bin # Add RVM to PATH for scripting
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" 
 export PATH=$PATH:$HOME/miniconda3/bin # conda
 # export PATH=$PATH:$HOME/.opus/bin # opus
@@ -128,6 +128,7 @@ autoload -U colors
 #aliases
 alias tmux="tmux -2"
 alias igrep='grep --color=auto -i --exclude-dir=node_modules'
+alias pygrep='grep --color=auto --include="*.py"'
 alias eniac='ssh jonchen@eniac.seas.upenn.edu'
 alias dolphin='sftp jonchen@origin.www.upenn.edu'
 alias speclab='ssh jonchen@speclab.seas.upenn.edu'
@@ -213,6 +214,7 @@ ssh-port () {
   ssh -nNT -L "$1":localhost:8888 anton
 }
 alias mvim='vim' #some fucking uber arc bullshit script
+alias vi='vim' #some fucking uber arc bullshit script
 
 # terminal-notifier
 # iTerm > Preferences > Profiles > (Your profile) > Advanced > Triggers
@@ -223,12 +225,43 @@ alias fin='echo DONE'
 
 # FB
 alias odm='ondemand' #some fucking uber arc bullshit script
+alias bm='cd /home/jpchen/fbsource/fbcode/beanmachine'
+alias ppl='cd /home/jpchen/fbsource/fbcode/beanmachine/beanmachine/ppl'
+alias fbcode='cd /home/jpchen/fbsource/fbcode'
+alias bma='cd /home/jpchen/fbsource/fbcode/ax/fb/utils/bma'
+alias bench='cd /home/jpchen/fbsource/fbcode/beanmachine/benchmarks/pplbench'
+alias bb='buck build'
+alias renew='kdestroy && kinit'
+# update () {
+#   if [ $# -lt 1 ]
+#   then
+#     echo "update [current branch]"
+#     return
+#   fi
+#   hg sl
+#   hg shelve && hg checkout master
+#   hg pull
+#   hg checkout "$1" && hg unshelve
+#   hg rebase -d master
+#   buck test //ax/fb/utils:bma_test
+# }
+
 # mercurial:
 # https://our.internmc.facebook.com/intern/wiki/Mercurial-workflow/cheat-sheet/
 alias hgd='hg diff'
 alias hgs='hg status'
+alias hgco='hg checkout'
+alias sl='hg sl'
 alias hgb='hg book'
-alias dev='ssh devserver'
+alias dev='et devserver:8080'
+alias hgdiff='hg diff -r bottom^ -r .'  # diff branch changes with master 
+
+alias lint='flake8 .'
+
+whatdiff () {
+  hg log -v -r $1 \
+    | perl -nle 'print $1 if /Differential Revision:.*\/(D[0-9]+$)/g'
+}
 
 
 #Git
@@ -499,3 +532,16 @@ unset __conda_setup
 # show hostname in the prompt
 # PROMPT="%{$fg[white]%}%n@%{$fg[green]%}%m%{$reset_color%} ${PROMPT}"
 export $EDITOR=vim
+# for fb devserver
+# alias proxy="HTTPS_PROXY=http://fwdproxy:8080 HTTP_PROXY=http://fwdproxy:8080 FTP_PROXY=http://fwdproxy:8080 https_proxy=http://fwdproxy:8080 http_proxy=http://fwdproxy:8080 ftp_proxy=http://fwdproxy:8080 http_no_proxy='\''*.facebook.com|*.tfbnw.net|*.fb.com'\'"
+# alias pip="proxy pip"
+
+# some shit for boost for bmgraph
+export PATH="/usr/local/opt/icu4c/bin:$PATH"
+export PATH="/usr/local/opt/llvm/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/icu4c/lib"
+export CPPFLAGS="-I/usr/local/opt/icu4c/include"
+export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig"
+export LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
+# for compilers to find llvm
+export CPPFLAGS="-I/usr/local/opt/llvm/include"
